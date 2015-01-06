@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+E:\IST 411\LeJos Dance\.metadata\.plugins\org.eclipse.jdt.core
+1271265990.index
+1001680116.index
+985125354.index

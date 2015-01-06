@@ -1,0 +1,146 @@
+// Mike Niedzielski
+
+import lejos.nxt.Motor;
+import lejos.nxt.SensorPortListener;
+//import lejos.nxt.Sound;
+import lejos.robotics.navigation.DifferentialPilot;
+import lejos.nxt.*;
+
+
+public class LeJos_Dance implements SensorPortListener{
+	public static DifferentialPilot myRobotMove = new DifferentialPilot(56.5,112.0,Motor.A,Motor.B);
+	SoundSensor ss = new SoundSensor(SensorPort.S1, true);
+	public static boolean endSong=false;
+	//ss.setDBA(true);
+	public static int count=0, zlCount=0, zrCount=0, start=0;
+	public LeJos_Dance(){
+		
+	}
+		public void stateChanged(SensorPort port, int value, int oldValue){
+			if(port==SensorPort.S1 && ss.readValue()>25)
+			{
+				dance();
+			}
+		}
+		private void run(){
+			SensorPort.S1.addSensorPortListener(this);
+		}
+
+		public static void main(String [] args) throws Exception{
+			LeJos_Dance myDance = new LeJos_Dance();
+			myDance.run();
+			while(getEndSong()==false){
+				myDance.dance();
+			}
+			
+	    }//end main
+		
+	     public static void dance(){
+	    	 
+	    	 	setSpeed(300);
+	            moveForward(225,350);//move 1  1.6 sec
+	            moveBackward(215,350);//move 2 1.6-3.1 sec
+	            spinRight(65);//move 3 3.1-8.0sec
+	            leftCircle(65);//move 4 8.0-12.6 sec
+	            moveForward(100,50);//move 5 12.6-17.4 sec
+	            setSpeed(350);
+	            rightCircle(65);//move 5 12.6-17.4 sec
+	            zigZag(250,200);//move 6 17.4- 25.8 sec
+	            zigZag(250,250);//move 6 17.4- 25.8 sec 
+	            while(count <3){//move 7-9 25.8- 44.9 sec
+	            	rotateRight(100,90);
+	            	for(int i=0; i<2;i++){
+	            		zigZag(250,200);
+	            	}//end for
+	            	count++;
+	            }//end while
+	            for(int i=0; i<4;i++){//move 10 44.9-54.6 sec
+	            	spinLeft(200);
+	            }
+	            for(int i=0; i<4;i++){//move 11 54.6-1'04.6 sec
+	            	spinRight(200);
+	            }
+	    	 	setSpeed(400);
+	            backLeftCircle(100,460);//move 12 1'04.6-1'17.1 sec
+	            moveBackward(50,50);//move 13 1'17.1-1'29.7 sec 
+	            setSpeed(300);
+	            backRightCircle(100,460);//move 13 1'17.1-1'29.7 sec 
+	            
+	            while(zlCount<4){//move 14 1'29.7-1'42.6 sec 
+	            	rotateLeft(100,35);
+	            	zigZag(250,200);
+	            	zlCount++;
+	            }
+	            while(zrCount<4){//move 15 1'42.6-1'55.5 sec 
+	            	rotateRight(100,35);
+	            	zigZag(-250,200);
+	            	zrCount++;
+	            }
+	            for(int i=0; i<5;i++){//move 16 1'55.5-2'01.1 sec
+	            	spinLeft(75);
+	            }//end for
+	            setEndSong(true);
+	            
+            }//end dance
+	     public static void setEndSong(boolean end){
+	    	 endSong=end;
+	     }
+	     
+		public static boolean getEndSong(){
+			return endSong;
+		}
+	     
+		public static void setSpeed(double speed){
+			myRobotMove.setTravelSpeed(speed);
+		}
+		public static void rotateLeft(double rSpeed, double rAngle){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(-rAngle);
+		}
+		public static void rotateRight(double rSpeed, double rAngle){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(rAngle);
+		}
+		public static void spinLeft(double rSpeed){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(-360);
+		}
+		public static void spinRight(double rSpeed){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(360);
+		}
+		public static void moveForward(double tSpeed, double tDist){
+			myRobotMove.setTravelSpeed(tSpeed);
+			myRobotMove.travel(tDist);
+		}
+		public static void moveBackward(double tSpeed, double tDist){
+			myRobotMove.setTravelSpeed(tSpeed);
+			myRobotMove.travel(-tDist);
+		}
+		public static void zigZag(double zRadius, double zDistance ){
+			myRobotMove.setTravelSpeed(275);
+			myRobotMove.travelArc(zRadius, zDistance);
+    		myRobotMove.travelArc((zRadius*(-.85)), (zDistance*2));
+    		//myRobotMove.
+		}
+		public static void leftCircle(double aSpeed){
+			myRobotMove.steer(aSpeed, 360);
+//			myRobotMove.
+		}
+		public static void rightCircle(double aSpeed){
+			myRobotMove.steer(aSpeed, -360);
+		}
+		public static void backLeftCircle(double aRad, double aDist){
+//			myRobotMove.setTravelSpeed(aSpeed);
+//			myRobotMove.arcForward(300);
+			//myRobotMove.ste
+//			myRobotMove.steerBackward(-aSpeed);
+			myRobotMove.travelArc(aRad, -aDist);
+		}
+		public static void backRightCircle(double aRad, double aDist){
+//			myRobotMove.setTravelSpeed(aSpeed);
+//			myRobotMove.arcBackward(-300);
+			myRobotMove.travelArc(-aRad, -aDist);
+			//myRobotMove.steerBackward(aSpeed);
+		}
+}//end main

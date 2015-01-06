@@ -1,0 +1,119 @@
+// Mike Niedzielski
+
+import lejos.nxt.Motor;
+//import lejos.nxt.Sound;
+import lejos.robotics.navigation.DifferentialPilot;
+import lejos.nxt.*;
+
+
+public class LeJos_Dance{
+	public static DifferentialPilot myRobotMove = new DifferentialPilot(56.5,112.0,Motor.A,Motor.B);
+	public LeJos_Dance(){
+		
+	}
+//		public void stateChanged(SensorPort port, int value, int oldValue){
+//			
+//		}
+
+		public static void main(String [] args) throws Exception
+	    {
+			//DifferentialPilot myRobotMove = new DifferentialPilot(56.5,112.0,Motor.A,Motor.B);
+	        int count=0, zlCount=0, zrCount=0, start=0;
+	        SoundSensor ss = new SoundSensor(SensorPort.S1, true);
+	        ss.setDBA(true);
+	        
+//	            Thread.sleep(2000);
+//	            while(ss.readValue()<25){
+//	            	ss.readValue();
+//	            	start=ss.readValue();
+//	            }
+//	            
+//	            if(start>25){
+//	            moveForward(225,350);//move 1  1.6 sec
+//	            moveBackward(215,350);//move 2 1.6-3.1 sec
+//	            spinRight(65);//move 3 3.1-8.0sec
+//	            leftCircle(65);//move 4 8.0-12.6 sec
+//	            moveForward(100,50);//move 5 12.6-17.4 sec
+//	            rightCircle(80);//move 5 12.6-17.4 sec
+	            zigZag(75,200);//move 6 17.4- 25.8 sec
+	            zigZag(75,200);//move 6 17.4- 25.8 sec 
+//	            while(count <3){//move 7-9 25.8- 44.9 sec
+//	            	rotateRight(100,90);
+//	            	for(int i=0; i<2;i++){
+//	            		zigZag(75,200);
+//	            	}//end for
+//	            	count++;
+//	            }//end while
+//	            for(int i=0; i<4;i++){//move 10 44.9-54.6 sec
+//	            	spinLeft(200);
+//	            }
+//	            for(int i=0; i<4;i++){//move 11 54.6-1'04.6 sec
+//	            	spinRight(200);
+//	            }
+//	            backLeftCircle(200);//move 12 1'04.6-1'17.1 sec
+//	            moveBackward(50,50);//move 13 1'17.1-1'29.7 sec 
+//	            backRightCircle(200);//move 13 1'17.1-1'29.7 sec 
+//	            
+//	            while(zlCount<5){//move 14 1'29.7-1'42.6 sec 
+//	            	rotateLeft(100,35);
+//	            	zigZag(75,150);
+//	            	zlCount++;
+//	            }
+//	            while(zrCount<5){//move 15 1'42.6-1'55.5 sec 
+//	            	rotateRight(100,35);
+//	            	zigZag(-75,150);
+//	            	zrCount++;
+//	            }
+//	            for(int i=0; i<5;i++){//move 16 1'55.5-2'01.1 sec
+//	            	spinLeft(75);
+//	            }//end for
+           // }//end if start
+	}//end main
+		
+		public static void rotateLeft(double rSpeed, double rAngle){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(-rAngle);
+		}
+		public static void rotateRight(double rSpeed, double rAngle){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(rAngle);
+		}
+		public static void spinLeft(double rSpeed){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(-360);
+		}
+		public static void spinRight(double rSpeed){
+			myRobotMove.setRotateSpeed(rSpeed);
+			myRobotMove.rotate(360);
+		}
+		public static void moveForward(double tSpeed, double tDist){
+			myRobotMove.setTravelSpeed(tSpeed);
+			myRobotMove.travel(tDist);
+		}
+		public static void moveBackward(double tSpeed, double tDist){
+			myRobotMove.setTravelSpeed(tSpeed);
+			myRobotMove.travel(-tDist);
+		}
+		public static void zigZag(double zRadius, double zDistance ){
+			myRobotMove.setTravelSpeed(275);
+			myRobotMove.travelArc(zRadius, zDistance);
+    		myRobotMove.travelArc((zRadius*(-1)), (zDistance));
+		}
+		public static void leftCircle(double aSpeed){
+			myRobotMove.steer(aSpeed, 450);
+//			myRobotMove.
+		}
+		public static void rightCircle(double aSpeed){
+			myRobotMove.steer(aSpeed, -450);
+		}
+		public static void backLeftCircle(double aSpeed){
+//			myRobotMove.setTravelSpeed(aSpeed);
+//			myRobotMove.arcForward(300);
+			myRobotMove.steerBackward(aSpeed);
+		}
+		public static void backRightCircle(double aSpeed){
+//			myRobotMove.setTravelSpeed(aSpeed);
+//			myRobotMove.arcBackward(-300);
+			myRobotMove.steerBackward(aSpeed);
+		}
+}//end main
